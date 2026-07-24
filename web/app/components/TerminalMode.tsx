@@ -1,20 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { SYMBOLS } from "@/lib/symbols";
 
 type Line = { text: string; kind: "cmd" | "out" | "err" };
 
 const HELP = `Available commands:
   help                        show this message
   catalog                     list products and prices
+  symbols                     list quick-insert ticker symbols
   buy <product> <symbol>      pay for a product, e.g. "buy spot-price AAPL"
   clear                       clear the screen`;
 
 const CATALOG_TEXT = [
-  "spot-price   $0.01   latest mock spot price",
-  "quote        $0.02   mock bid/ask quote",
-  "ai-insight   $0.05   AI-style market note",
+  "spot-price   0.01 HBAR   latest mock spot price",
+  "quote        0.02 USDC   mock bid/ask quote",
+  "ai-insight   0.05 HBAR   AI-style market note",
 ].join("\n");
+
+const SYMBOLS_TEXT = SYMBOLS.map((s) => `${s.symbol.padEnd(6)} ${s.label}`).join("\n");
 
 export default function TerminalMode() {
   const [lines, setLines] = useState<Line[]>([
@@ -33,6 +37,17 @@ export default function TerminalMode() {
     setLines((prev) => [...prev, { text, kind }]);
   }
 
+  function insertSymbol(symbol: string) {
+    setInput((prev) => {
+      const parts = prev.trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return `buy spot-price ${symbol} `;
+      if (parts.length === 1) return `${parts[0]} spot-price ${symbol} `;
+      parts[2] = symbol;
+      return `${parts.slice(0, 3).join(" ")} `;
+    });
+    inputRef.current?.focus();
+  }
+
   async function runCommand(raw: string) {
     const cmd = raw.trim();
     if (!cmd) return;
@@ -49,6 +64,9 @@ export default function TerminalMode() {
         return;
       case "catalog":
         print(CATALOG_TEXT);
+        return;
+      case "symbols":
+        print(SYMBOLS_TEXT);
         return;
       case "buy": {
         const [product, symbol = "AAPL"] = args;
@@ -85,36 +103,46 @@ export default function TerminalMode() {
   }
 
   return (
-    <section className="terminal" onClick={() => inputRef.current?.focus()}>
-      <div className="terminal-body">
-        {lines.map((line, i) => (
-          <div key={i} className={`line ${line.kind}`}>
-            {line.text}
-          </div>
+    <section className="terminal-wrap">
+      <div className="symbol-chips" role="group" aria-label="Quick-insert symbols">
+        {SYMBOLS.slice(0, 8).map((s) => (
+          <button key={s.symbol} type="button" onClick={() => insertSymbol(s.symbol)}>
+            {s.symbol}
+          </button>
         ))}
-        <div ref={bottomRef} />
       </div>
-      <form
-        className="terminal-input"
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (busy) return;
-          const value = input;
-          setInput("");
-          runCommand(value);
-        }}
-      >
-        <span className="prompt">$</span>
-        <input
-          ref={inputRef}
-          autoFocus
-          value={input}
-          disabled={busy}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="buy ai-insight TSLA"
-          spellCheck={false}
-        />
-      </form>
+
+      <div className="terminal" onClick={() => inputRef.current?.focus()}>
+        <div className="terminal-body">
+          {lines.map((line, i) => (
+            <div key={i} className={`line ${line.kind}`}>
+              {line.text}
+            </div>
+          ))}
+          <div ref={bottomRef} />
+        </div>
+        <form
+          className="terminal-input"
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (busy) return;
+            const value = input;
+            setInput("");
+            runCommand(value);
+          }}
+        >
+          <span className="prompt">$</span>
+          <input
+            ref={inputRef}
+            autoFocus
+            value={input}
+            disabled={busy}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="buy ai-insight TSLA"
+            spellCheck={false}
+          />
+        </form>
+      </div>
     </section>
   );
 }

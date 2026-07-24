@@ -10,12 +10,15 @@ export default function Home() {
 
   return (
     <main className="wrap">
-      <header>
-        <h1>x402 on Hedera</h1>
+      <section className="hero">
+        <span className="eyebrow">Hedera testnet · x402 protocol</span>
+        <h1>Pay per call. Settle on Hedera.</h1>
         <p className="sub">
-          Pay-per-call data, settled on Hedera testnet in seconds for fractions of a cent.
+          Every request below is metered by the x402 standard: an HTTP 402 is issued, a
+          payment is signed and settled on Hedera testnet — in HBAR or USDC — and the data
+          is returned. No accounts, no subscriptions, no invoices.
         </p>
-      </header>
+      </section>
 
       <ModeToggle mode={mode} onChange={setMode} />
 

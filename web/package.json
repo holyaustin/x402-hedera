@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "next": "^15.0.0",
@@ -15,12 +17,24 @@
     "@x402/core": "latest",
     "@x402/fetch": "latest",
     "@x402/hedera": "latest",
-    "@hiero-ledger/sdk": "latest"
+    "@hiero-ledger/sdk": "2.85.0",
+    "@hiero-ledger/proto": "2.31.0"
   },
   "devDependencies": {
     "typescript": "^5.6.0",
     "@types/node": "^22.7.0",
     "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0"
+    "@types/react-dom": "^18.3.0",
+    "vitest": "^2.1.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.0",
+    "jsdom": "^25.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/user-event": "^14.5.0"
+  },
+  "overrides": {
+    "@hiero-ledger/sdk": "2.85.0",
+    "@hiero-ledger/proto": "2.31.0"
   }
 }
