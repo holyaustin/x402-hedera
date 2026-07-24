@@ -271,8 +271,16 @@ technical.
 Every successful purchase returns a Hedera transaction id in the payment
 response header, and the app turns it into a link like:
 
+https://hashscan.io/testnet/account/0.0.9693209/operations
+
+https://hashscan.io/testnet/account/0.0.9693221/operations
+
 ```
-https://hashscan.io/testnet/transaction/0.0.xxxxx@169...
+https://hashscan.io/testnet/transaction/0.0.7162784@1784919117.305354593
+
+https://hashscan.io/testnet/transaction/0.0.7162784@1784919156.713110754
+
+https://hashscan.io/testnet/transaction/0.0.7162784@1784921057.817511506
 ```
 
 Click that link (or the one printed by `scripts/buy.ts`) to see the real,
