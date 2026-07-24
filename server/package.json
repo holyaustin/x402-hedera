@@ -1,0 +1,34 @@
+{
+  "name": "x402-hedera-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "x402 resource server selling per-call data, settled on Hedera testnet (mixed HBAR + USDC pricing)",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "buy": "tsx scripts/buy.ts",
+    "associate": "tsx scripts/associate.ts"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "@hono/node-server": "^1.13.0",
+    "@x402/core": "latest",
+    "@x402/hono": "latest",
+    "@x402/fetch": "latest",
+    "@x402/hedera": "latest",
+    "@hiero-ledger/sdk": "2.85.0",
+    "@hiero-ledger/proto": "2.31.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "tsx": "^4.19.0",
+    "@types/node": "^22.7.0"
+  },
+  "overrides": {
+    "@hiero-ledger/sdk": "2.85.0",
+    "@hiero-ledger/proto": "2.31.0"
+  }
+}
