@@ -12,8 +12,13 @@ import { ExactHederaScheme } from "@x402/hedera/exact/client";
 import { createClientHederaSigner } from "@x402/hedera";
 import { PrivateKey } from "@hiero-ledger/sdk";
 
+// x402's PaymentOption.network is typed as this literal pattern (a CAIP-2
+// id like "hedera:testnet"). process.env values are always plain `string`,
+// so we cast once here rather than fighting the compiler at every call site.
+type CaipNetwork = `${string}:${string}`;
+
 const RESOURCE_SERVER_URL = process.env.RESOURCE_SERVER_URL ?? "http://localhost:4021";
-const NETWORK = process.env.HEDERA_NETWORK ?? "hedera:testnet";
+const NETWORK = (process.env.HEDERA_NETWORK ?? "hedera:testnet") as CaipNetwork;
 
 let fetchWithPayment: ReturnType<typeof wrapFetchWithPayment> | null = null;
 let httpClient: x402HTTPClient | null = null;
