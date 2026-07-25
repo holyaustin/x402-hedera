@@ -281,6 +281,12 @@ https://hashscan.io/testnet/transaction/0.0.7162784@1784919117.305354593
 https://hashscan.io/testnet/transaction/0.0.7162784@1784919156.713110754
 
 https://hashscan.io/testnet/transaction/0.0.7162784@1784921057.817511506
+
+https://hashscan.io/testnet/transaction/0.0.7162784@1784929986.329447882
+
+https://hashscan.io/testnet/transaction/0.0.7162784@1784931942.747461580
+
+https://hashscan.io/testnet/transaction/0.0.7162784@1784931942.747461580
 ```
 
 Click that link (or the one printed by `scripts/buy.ts`) to see the real,
