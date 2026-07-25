@@ -23,9 +23,9 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "x402 + Hedera — Pay-Per-Call Demo",
+  title: "x402·Hedera-Agent — Autonomous Pay-Per-Call Demo",
   description:
-    "Buy live data one request at a time, paid via the x402 standard and settled on Hedera testnet in HBAR or USDC.",
+    "An autonomous agent that buys live data one request at a time via the x402 standard, settling on Hedera testnet in HBAR or USDC — on a schedule, no human required.",
   icons: {
     icon: "/icon.svg",
   },

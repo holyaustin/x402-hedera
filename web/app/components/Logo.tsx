@@ -37,9 +37,9 @@ export default function Logo({ withWordmark = true, size = 32 }: Props) {
         <path d="M32 16 L16 32" stroke="url(#logoGrad)" strokeWidth="2.6" strokeLinecap="round" />
         <circle cx="24" cy="24" r="2.6" fill="#7db2ff" />
       </svg>
-      {withWordmark && (
+    {withWordmark && (
         <span className="logo-word">
-          x402<span className="logo-dot">·</span>Hedera
+          x402<span className="logo-dot">·</span>Hedera-Agent
         </span>
       )}
     </span>

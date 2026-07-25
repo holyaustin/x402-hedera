@@ -5,6 +5,13 @@
 // Hedera private key out of client-side JavaScript. The React components
 // (UI mode and CLI mode) never see a key; they just POST { product, symbol }
 // to /api/pay and get back the paid-for data plus a HashScan link.
+//
+// The "seller" x402 endpoints now live in THIS SAME Next.js deployment
+// (see lib/sellerApp.ts + app/api/x402/[[...route]]/route.ts), so this
+// still does a real HTTP round-trip — a genuine 402 challenge and a signed
+// payment retry — it's just calling a route on the same app instead of a
+// separate service. That keeps the demo to a single deployment while the
+// x402 protocol mechanics stay identical.
 
 import { wrapFetchWithPayment, x402HTTPClient } from "@x402/fetch";
 import { x402Client } from "@x402/core/client";
@@ -12,19 +19,27 @@ import { ExactHederaScheme } from "@x402/hedera/exact/client";
 import { createClientHederaSigner } from "@x402/hedera";
 import { PrivateKey } from "@hiero-ledger/sdk";
 
-// x402's PaymentOption.network is typed as this literal pattern (a CAIP-2
-// id like "hedera:testnet"). process.env values are always plain `string`,
-// so we cast once here rather than fighting the compiler at every call site.
 type CaipNetwork = `${string}:${string}`;
 
-const RESOURCE_SERVER_URL = process.env.RESOURCE_SERVER_URL ?? "http://localhost:4021";
 const NETWORK = (process.env.HEDERA_NETWORK ?? "hedera:testnet") as CaipNetwork;
+
+// Resolve the base URL of the seller endpoints, in priority order:
+//   1. RESOURCE_SERVER_URL, if you explicitly set one (e.g. still pointing
+//      at a standalone server/ deployment instead of the bundled routes).
+//   2. VERCEL_URL, which Vercel auto-injects with the current deployment's
+//      hostname — no manual config needed once deployed.
+//   3. localhost:3000, for local `npm run dev`.
+function resolveResourceServerBase(): string {
+  if (process.env.RESOURCE_SERVER_URL) return process.env.RESOURCE_SERVER_URL;
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return "http://localhost:3000";
+}
+
+const RESOURCE_SERVER_URL = `${resolveResourceServerBase()}/api/x402`;
 
 let fetchWithPayment: ReturnType<typeof wrapFetchWithPayment> | null = null;
 let httpClient: x402HTTPClient | null = null;
 
-// Build the paying client once and reuse it across requests (cheaper than
-// re-deriving the signer on every call).
 function getClient() {
   if (fetchWithPayment && httpClient) {
     return { fetchWithPayment, httpClient };
@@ -70,10 +85,6 @@ export async function payAndFetch(product: string, symbol: string): Promise<PayR
     const response = await fetchWithPayment(url, { method: "GET" });
     const result = await httpClient.processResponse(response);
 
-    // The settlement result (including the Hedera transaction id) comes back
-    // in the decoded PAYMENT-RESPONSE header. The exact field name can vary
-    // slightly by facilitator/SDK version — log `result.header` the first
-    // time you run this and adjust the lookup below if needed.
     const header = result.header as Record<string, unknown> | undefined;
     const txId =
       (header?.transaction as string | undefined) ??

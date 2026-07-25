@@ -11,12 +11,13 @@ export default function Home() {
   return (
     <main className="wrap">
       <section className="hero">
-        <span className="eyebrow">Hedera testnet · x402 protocol</span>
-        <h1>Pay per call. Settle on Hedera.</h1>
+        <span className="eyebrow">Hedera testnet · x402 protocol · Autonomous agent</span>
+        <h1>An agent that pays as it goes.</h1>
         <p className="sub">
           Every request below is metered by the x402 standard: an HTTP 402 is issued, a
           payment is signed and settled on Hedera testnet — in HBAR or USDC — and the data
-          is returned. No accounts, no subscriptions, no invoices.
+          is returned. The same agent also buys on its own daily schedule with no human
+          involved — see the <a href="/receipts">receipts ledger</a> for proof.
         </p>
       </section>
 
