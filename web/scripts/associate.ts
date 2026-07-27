@@ -8,7 +8,8 @@
 //   npx tsx scripts/associate.ts                # associates with Hedera testnet USDC
 //   npx tsx scripts/associate.ts 0.0.SOMETOKEN  # associate with a different token
 
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { Client, AccountId, PrivateKey, TokenAssociateTransaction } from "@hiero-ledger/sdk";
 
 const HEDERA_TESTNET_USDC = "0.0.429274";

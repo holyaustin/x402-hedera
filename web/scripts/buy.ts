@@ -10,7 +10,8 @@
 //   npx tsx scripts/buy.ts quote AAPL         # settles in USDC
 //   npx tsx scripts/buy.ts ai-insight TSLA    # settles in HBAR
 
-import "dotenv/config";
+import { config } from "dotenv";
+config({ path: ".env.local" });
 import { wrapFetchWithPayment, x402HTTPClient } from "@x402/fetch";
 import { x402Client } from "@x402/core/client";
 import { ExactHederaScheme } from "@x402/hedera/exact/client";
