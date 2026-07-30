@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="site-header-inner">
-        <a href="#top" className="header-brand" aria-label="x402·Hedera-Agent, home">
+        <a href="/" className="header-brand"                 aria-label="x402·Hedera-Agent, home">
           <Logo />
         </a>
 

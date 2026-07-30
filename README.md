@@ -7,6 +7,8 @@ CLI so a person can trigger the identical payment flow on demand.
 
 Built for the [Hedera x402 bounty](https://hedera.com/x402-bounty).
 
+Transactions on Hedera testnet explorer for [All x402 API calls](https://hashscan.io/testnet/account/0.0.9693209/operations).
+
 ---
 
 ## What makes this a *payment solution*, not just a demo
@@ -25,38 +27,33 @@ loop."** This project satisfies that literally, not just in spirit:
 - **UI Mode and CLI Mode** remain available for on-demand, human-triggered
   purchases — the same underlying payment engine, a different trigger.
 
-## Architecture — one deployment, not two
 
-Everything lives in a single Next.js app (`web/`). There's no separate
-resource server to deploy or keep in sync:
+## Architecture — one deployment
 
+Everything lives in a single Next.js app (`web/`). There's no separate resource server to deploy or keep in sync: The Server (`server/`) was initially used to serve the web but was later abondoned for a single deployment through NExtJS (Since it can handle both server and client on one deployment)
+
+```
 web/
 ├── app/
-│ ├── page.tsx UI Mode + CLI Mode toggle
-│ ├── receipts/page.tsx live payment ledger (mirror node)
-│ ├── api/pay/route.ts buyer: human-triggered purchase
-│ ├── api/agent/run/route.ts buyer: autonomous, cron-triggered
-│ └── api/x402/[[...route]]/route.ts seller: Hono app mounted in Next.js
+│   ├── page.tsx                 # UI Mode + CLI Mode toggle
+│   ├── receipts/page.tsx        # live payment ledger (mirror node)
+│   ├── api/pay/route.ts         # buyer: human-triggered purchase
+│   ├── api/agent/run/route.ts   # buyer: autonomous, cron-triggered
+│   └── api/x402/[[...route]]/route.ts  # seller: Hono app mounted in Next.js
 ├── lib/
-│ ├── payClient.ts shared buyer/signer logic
-│ ├── sellerApp.ts x402 paymentMiddleware + Hedera scheme
-│ ├── sellerProducts.ts catalog + mock data
-│ ├── agent.ts autonomous purchase decision logic
-│ └── symbols.ts shared ticker list
+│   ├── payClient.ts             # shared buyer/signer logic
+│   ├── sellerApp.ts             # x402 paymentMiddleware + Hedera scheme
+│   ├── sellerProducts.ts        # catalog + mock data
+│   ├── agent.ts                 # autonomous purchase decision logic
+│   └── symbols.ts               # shared ticker list
 ├── scripts/
-│ ├── buy.ts CLI purchase tester
-│ └── associate.ts one-time HTS token association
-└── vercel.json daily cron config
+│   ├── buy.ts                   # CLI purchase tester
+│   └── associate.ts             # one-time HTS token association
+└── vercel.json                  # daily cron config
+```
 
-
-The "seller" (`lib/sellerApp.ts`, a Hono app with x402's `paymentMiddleware`)
-and the "buyer" (`lib/payClient.ts`) are still architecturally distinct —
-they just live in one deployment instead of two. Every purchase is still a
-real HTTP request carrying a real `402`, a real signed payment, and a real
-Hedera settlement; nothing about the protocol mechanics changed by bundling
-them.
-
----
+The "seller" (`lib/sellerApp.ts`, a Hono app with x402's `paymentMiddleware`) and the "buyer" (`lib/payClient.ts`) are still architecturally distinct — they just live in one deployment instead of two. Every purchase is still a real HTTP request carrying a real `402`, a real signed payment, and a real Hedera settlement.
+```
 
 ## Setup
 
@@ -67,12 +64,12 @@ cp .env.local.example .env.local
 
 Fill in `.env.local`:
 
-HEDERA_ACCOUNT_ID=0.0.YOUR_BUYER_ACCOUNT
-HEDERA_PRIVATE_KEY=YOUR_BUYER_ECDSA_PRIVATE_KEY
-PAY_TO_ACCOUNT=0.0.YOUR_SELLER_ACCOUNT
-FACILITATOR_URL=https://api.testnet.blocky402.com
-HEDERA_NETWORK=hedera:testnet
-CRON_SECRET=any-random-string-you-choose
+- HEDERA_ACCOUNT_ID=0.0.YOUR_BUYER_ACCOUNT
+- HEDERA_PRIVATE_KEY=YOUR_BUYER_ECDSA_PRIVATE_KEY
+- PAY_TO_ACCOUNT=0.0.YOUR_SELLER_ACCOUNT
+- FACILITATOR_URL=https://api.testnet.blocky402.com
+- HEDERA_NETWORK=hedera:testnet
+- CRON_SECRET=any-random-string-you-choose
 
 
 Install and run:
