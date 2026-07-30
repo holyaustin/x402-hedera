@@ -9,6 +9,10 @@ Built for the [Hedera x402 bounty](https://hedera.com/x402-bounty).
 
 Transactions on Hedera testnet explorer for [All x402 API calls](https://hashscan.io/testnet/account/0.0.9693209/operations).
 
+Live Url for demo [ Live Demo Url](https://x402-hedera-agent.vercel.app/).
+
+Youtube video [YouTube Video Demo Url](https://youtu.be/XzkdQsLYPuY).
+
 ---
 
 ## What makes this a *payment solution*, not just a demo
