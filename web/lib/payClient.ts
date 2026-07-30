@@ -31,9 +31,11 @@ const NETWORK = (process.env.HEDERA_NETWORK ?? "hedera:testnet") as CaipNetwork;
 //   3. localhost:3000, for local `npm run dev`.
 function resolveResourceServerBase(): string {
   if (process.env.RESOURCE_SERVER_URL) return process.env.RESOURCE_SERVER_URL;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  // if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return "http://localhost:3000";
 }
+
+
 
 const RESOURCE_SERVER_URL = `${resolveResourceServerBase()}/api/x402`;
 

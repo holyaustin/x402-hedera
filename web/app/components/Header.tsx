@@ -11,7 +11,7 @@ export default function Header() {
         </a>
 
         <nav className="header-nav" aria-label="Primary">
-          <a href="/receipts">Receipts</a>
+          <a href="https://hashscan.io/testnet/account/0.0.9693209/operations">Receipts</a>
           <a href="https://hedera.com/x402-bounty" target="_blank" rel="noreferrer">Bounty</a>
           <a href="https://docs.x402.org" target="_blank" rel="noreferrer">x402 Docs</a>
           <a href="https://hashscan.io/testnet" target="_blank" rel="noreferrer" className="header-cta">HashScan ↗</a>
